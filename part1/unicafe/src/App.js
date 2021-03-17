@@ -12,16 +12,20 @@ const Button = ({ text, count, setCount }) => {
 
 const Statistics = ({ good, neutral, bad }) => {
   let all = good + neutral + bad
-  return (
-    <>
-      <div>good {good}</div>
-      <div>neutral {neutral}</div>
-      <div>bad {bad}</div>
-      <div>all {all}</div>
-      <div>average {(good - bad) / all}</div>
-      <div>positive {good / all * 100} %</div>
-    </>
-  )
+  if (all === 0) {
+    return <div>No feedback given</div>
+  } else {
+    return (
+      <>
+        <div>good {good}</div>
+        <div>neutral {neutral}</div>
+        <div>bad {bad}</div>
+        <div>all {all}</div>
+        <div>average {(good - bad) / all}</div>
+        <div>positive {good / all * 100} %</div>
+      </>
+    )
+  }
 }
 
 const App = () => {
