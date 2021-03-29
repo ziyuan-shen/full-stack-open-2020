@@ -43,6 +43,16 @@ const App = () => {
     }
   }
 
+  const handleDelete = (event, id, name) => {
+    event.preventDefault()
+    if (window.confirm(`Delete ${name}?`)) {
+      personService.deletePerson(id)
+        .then(response => {
+          setPersons(persons.filter(person => person.id !== id))
+        })
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -50,7 +60,7 @@ const App = () => {
       <h2>Add a new</h2>
       <PersonForm addName={addName} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange}/>
       <h2>Numbers</h2>
-      <Persons persons={persons} filterString={filterString}/>
+      <Persons persons={persons} filterString={filterString} handleDelete={handleDelete}/>
     </div>
   )
 }
