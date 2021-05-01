@@ -24,13 +24,16 @@ app.get('/api/persons', (request, response) => {
     })
 })
 
-app.get('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response, next) => {
     Person.findById(request.params.id).then(result => {
         if (result) {
             response.json(result)
         } else {
             response.status(404).end()
         }
+    })
+    .catch(error => {
+        next(error)
     })
 })
 
@@ -58,6 +61,27 @@ app.post('/api/persons', (request, response) => {
     })
 })
 
+app.delete('/api/persons/:id', (request, response, next) => {
+    Person.findByIdAndRemove(request.params.id).then(result => {
+        response.status(204).end()
+    })
+    .catch(error => next(error))
+})
+
+app.put('/api/persons/:id', (request, response, next) => {
+    const body = request.body
+
+    const person = {
+        name: body.name,
+        number: body.number
+    }
+
+    Person.findByIdAndUpdate(request.params.id, person, {new: true})
+      .then(updatedPerson => {
+          response.json(updatedPerson)
+      })
+      .catch(error => next(error))
+})
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
